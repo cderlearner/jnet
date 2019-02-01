@@ -1,7 +1,7 @@
 package com.xing.event;
 
 
-import com.xing.context.ChannelHandlerContext;
+import com.xing.handler.ChannelHandlerContext;
 
 public class ChannelInActiveEvent extends Event {
 

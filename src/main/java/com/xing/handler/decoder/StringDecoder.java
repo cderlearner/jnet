@@ -1,17 +1,17 @@
 package com.xing.handler.decoder;
 
-import com.xing.context.ChannelHandlerContext;
+import com.xing.handler.ChannelHandlerContext;
 import com.xing.handler.InBoundHandlerAdapter;
-import com.xing.log.LogManager;
-import com.xing.log.api.ILog;
+import com.xing.util.log.LogManager;
+import com.xing.util.log.api.ILog;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 public class StringDecoder extends InBoundHandlerAdapter {
+    private static final ILog logger = LogManager.getLogger(StringDecoder.class);
 
     private static final Charset defaultCharSet = Charset.forName("UTF-8");
-    private static final ILog logger = LogManager.getLogger(StringDecoder.class);
     private final Charset charset;
 
     public StringDecoder() {

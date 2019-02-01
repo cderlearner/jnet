@@ -1,22 +1,22 @@
 package com.xing.handler.decoder;
 
-import com.xing.context.ChannelHandlerContext;
+import com.xing.handler.ChannelHandlerContext;
 import com.xing.handler.InBoundHandlerAdapter;
-import com.xing.log.LogManager;
-import com.xing.log.api.ILog;
+import com.xing.util.log.LogManager;
+import com.xing.util.log.api.ILog;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DelimiterBasedDecoder extends InBoundHandlerAdapter {
+    private static final ILog logger = LogManager.getLogger(DelimiterBasedDecoder.class);
 
     private final byte delimiter;
     //上次处理的剩余
     private byte[] todo;
     private static final int defaultMaxLength = 1024;
     private final int maxLength;
-    private static final ILog logger = LogManager.getLogger(DelimiterBasedDecoder.class);
 
     public DelimiterBasedDecoder(char delimiter) {
         this(delimiter, 0);

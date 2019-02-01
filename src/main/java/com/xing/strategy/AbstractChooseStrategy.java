@@ -6,9 +6,9 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class AbstractChooseStrategy<T> implements ChooseStrategy<T> {
 
-    protected List<T> candidates;
-    protected int length;
-    protected int index = 0;
+    List<T> candidates;
+    int length;
+    int index = 0;
     private final Lock lock = new ReentrantLock();
 
     public T choose(Object param) {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelHandlerChain {
-
     private final List<InBoundHandler> inBoundHandlers;
     private final List<OutBoundHandler> outBoundHandlers;
 
@@ -25,12 +24,11 @@ public class ChannelHandlerChain {
         }
     }
 
-    public List<InBoundHandler> getInBoundHandlers() {
-        return new ArrayList<InBoundHandler>(inBoundHandlers);
+    public List<InBoundHandler> copyInBoundHandlers() {
+        return new ArrayList<>(inBoundHandlers);
     }
 
-    public List<OutBoundHandler> getOutBoundHandlers() {
-        return new ArrayList<OutBoundHandler>(outBoundHandlers);
+    public List<OutBoundHandler> copyOutBoundHandlers() {
+        return new ArrayList<>(outBoundHandlers);
     }
-
 }

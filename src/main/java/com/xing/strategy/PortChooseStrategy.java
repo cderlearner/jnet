@@ -1,16 +1,15 @@
 package com.xing.strategy;
 
-import com.xing.log.LogManager;
-import com.xing.log.api.ILog;
-import com.xing.worker.RWWorker;
+import com.xing.util.log.LogManager;
+import com.xing.util.log.api.ILog;
+import com.xing.selector.worker.RWWorker;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SocketChannel;
 
 /**
- *同一个连接的事件被分发到同一个线程.
- *
+ * 同一个连接的事件被分发到同一个线程.
  */
 public class PortChooseStrategy extends AbstractChooseStrategy<RWWorker> {
 
@@ -35,5 +34,4 @@ public class PortChooseStrategy extends AbstractChooseStrategy<RWWorker> {
         }
         return worker;
     }
-
 }

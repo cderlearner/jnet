@@ -1,6 +1,6 @@
 package com.xing.handler.encoder;
 
-import com.xing.context.ChannelHandlerContext;
+import com.xing.handler.ChannelHandlerContext;
 import com.xing.handler.OutBoundHandlerAdapter;
 import java.nio.ByteBuffer;
 

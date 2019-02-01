@@ -1,9 +1,8 @@
 package com.xing.handler;
 
 
-import com.xing.context.ChannelHandlerContext;
-
 import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * 用以在客户端Channel建立时想HandlerChain添加Handler.
@@ -16,18 +15,11 @@ public abstract class HandlerInitializer extends InBoundHandlerAdapter {
     public void channelActive(ChannelHandlerContext context) {
         Handler[] handlers = init();
         Objects.requireNonNull(handlers);
+        // 移除初始化handler
         context.removeHandlerInitializer(this);
-        for (int i = 0, l = handlers.length; i < l; i++) {
-            context.addHandler(handlers[i]);
-        }
+        Stream.of(handlers).forEach(context::addHandler);
         context.fireChannelActive();
     }
 
-    /**
-     * 返回想要添加的Handler数组.
-     *
-     * @return {@link Handler} array
-     */
     public abstract Handler[] init();
-
 }

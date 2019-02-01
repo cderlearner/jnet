@@ -1,15 +1,13 @@
 package com.xing.handler;
 
-import com.xing.context.ChannelHandlerContext;
-import com.xing.log.LogManager;
-import com.xing.log.api.ILog;
+import com.xing.util.log.LogManager;
+import com.xing.util.log.api.ILog;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class DefaultOutBoundHandler implements OutBoundHandler {
-
     private static final ILog logger = LogManager.getLogger(DefaultOutBoundHandler.class);
 
     @Override
@@ -38,5 +36,4 @@ public class DefaultOutBoundHandler implements OutBoundHandler {
             }
         }
     }
-
 }

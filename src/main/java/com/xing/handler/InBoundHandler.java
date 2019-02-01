@@ -1,10 +1,8 @@
 package com.xing.handler;
 
 
-import com.xing.context.ChannelHandlerContext;
-
 /**
- * 数据读取事件处理器.
+ * 进站事件处理器
  */
 public interface InBoundHandler extends Handler {
 
@@ -28,5 +26,4 @@ public interface InBoundHandler extends Handler {
      * @param context {@link ChannelHandlerContext} 处理器上下文
      */
     void channelRead(Object message, ChannelHandlerContext context);
-
 }

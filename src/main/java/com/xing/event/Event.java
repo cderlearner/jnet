@@ -1,18 +1,18 @@
 package com.xing.event;
 
-import com.xing.context.ChannelHandlerContext;
+import com.xing.handler.ChannelHandlerContext;
 
 public abstract class Event implements Runnable {
 
     private ChannelHandlerContext ctx;
     private Object message;
 
-    public Event(ChannelHandlerContext context, Object message) {
+    Event(ChannelHandlerContext context, Object message) {
         this.ctx = context;
         this.message = message;
     }
 
-    public Event(ChannelHandlerContext ctx) {
+    Event(ChannelHandlerContext ctx) {
         this.ctx = ctx;
     }
 

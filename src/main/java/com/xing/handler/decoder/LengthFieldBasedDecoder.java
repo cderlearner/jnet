@@ -1,9 +1,9 @@
 package com.xing.handler.decoder;
 
-import com.xing.context.ChannelHandlerContext;
+import com.xing.handler.ChannelHandlerContext;
 import com.xing.handler.InBoundHandlerAdapter;
-import com.xing.log.LogManager;
-import com.xing.log.api.ILog;
+import com.xing.util.log.LogManager;
+import com.xing.util.log.api.ILog;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LengthFieldBasedDecoder extends InBoundHandlerAdapter {
-
     private static final ILog logger = LogManager.getLogger(LengthFieldBasedDecoder.class);
 
     //字节序

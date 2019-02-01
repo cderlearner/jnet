@@ -1,7 +1,5 @@
 package com.xing.handler;
 
-import com.xing.context.ChannelHandlerContext;
-
 /**
  * 除了向下转发什么也不做，自己实现的InBoundHandlerAdapter可继承此类.
  */
