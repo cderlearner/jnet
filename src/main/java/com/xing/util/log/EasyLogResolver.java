@@ -1,6 +1,5 @@
 package com.xing.util.log;
 
-
 import com.xing.util.log.api.ILog;
 import com.xing.util.log.api.LogResolver;
 

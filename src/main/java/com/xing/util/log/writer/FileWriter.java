@@ -1,6 +1,5 @@
 package com.xing.util.log.writer;
 
-import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -23,6 +22,7 @@ public class FileWriter implements IWriter, EventHandler<LogMessageHolder> {
     private static final Object CREATE_LOCK = new Object();
     private Disruptor<LogMessageHolder> disruptor;
     private RingBuffer<LogMessageHolder> buffer;
+
     private FileOutputStream fileOutputStream;
     private volatile boolean started = false;
     private volatile int fileSize;
@@ -40,12 +40,7 @@ public class FileWriter implements IWriter, EventHandler<LogMessageHolder> {
     }
 
     private FileWriter() {
-        disruptor = new Disruptor<LogMessageHolder>(new EventFactory<LogMessageHolder>() {
-            @Override
-            public LogMessageHolder newInstance() {
-                return new LogMessageHolder();
-            }
-        }, 1024, DaemonThreadFactory.INSTANCE);
+        disruptor = new Disruptor<>(LogMessageHolder::new, 1024, DaemonThreadFactory.INSTANCE);
         disruptor.handleEventsWith(this);
         buffer = disruptor.getRingBuffer();
         lineNum = 0;
@@ -80,36 +75,22 @@ public class FileWriter implements IWriter, EventHandler<LogMessageHolder> {
 
     private void switchFile() {
         if (fileSize > LogConfig.Logging.MAX_FILE_SIZE) {
-            forceExecute(new Callable() {
-                @Override
-                public Object call() throws Exception {
-                    fileOutputStream.flush();
-                    return null;
-                }
+            forceExecute(() -> {
+                fileOutputStream.flush();
+                return null;
             });
-            forceExecute(new Callable() {
-                @Override
-                public Object call() throws Exception {
-                    fileOutputStream.close();
-                    return null;
-                }
+            forceExecute(() -> {
+                fileOutputStream.close();
+                return null;
             });
-            forceExecute(new Callable() {
-                @Override
-                public Object call() throws Exception {
-                    new File(LogConfig.Logging.DIR, LogConfig.Logging.FILE_NAME)
-                        .renameTo(new File(LogConfig.Logging.DIR,
-                            LogConfig.Logging.FILE_NAME + new SimpleDateFormat(".yyyy_MM_dd_HH_mm_ss").format(new Date())));
-                    return null;
-                }
+            forceExecute(() -> {
+                new File(LogConfig.Logging.DIR, LogConfig.Logging.FILE_NAME).renameTo(new File(LogConfig.Logging.DIR,LogConfig.Logging.FILE_NAME + new SimpleDateFormat(".yyyy_MM_dd_HH_mm_ss").format(new Date())));
+                return null;
             });
-            forceExecute(new Callable() {
-                @Override
-                public Object call() throws Exception {
-                    fileOutputStream = null;
-                    started = false;
-                    return null;
-                }
+            forceExecute(() -> {
+                fileOutputStream = null;
+                started = false;
+                return null;
             });
         }
     }
