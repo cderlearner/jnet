@@ -5,7 +5,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public abstract class AbstractChooseStrategy<T> implements ChooseStrategy<T> {
-
     List<T> candidates;
     int length;
     int index = 0;
@@ -22,7 +21,8 @@ public abstract class AbstractChooseStrategy<T> implements ChooseStrategy<T> {
         } finally {
             lock.unlock();
         }
-        return result;    }
+        return result;
+    }
 
     public void setCandidates(List<T> candidates) {
         this.candidates = candidates;
@@ -30,5 +30,4 @@ public abstract class AbstractChooseStrategy<T> implements ChooseStrategy<T> {
     }
 
     public abstract T doChoose(Object param);
-
 }

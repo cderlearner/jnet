@@ -9,5 +9,4 @@ public interface LifeCycle {
      * 启动.
      */
     void start();
-
 }
