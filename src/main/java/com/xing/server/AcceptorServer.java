@@ -36,7 +36,7 @@ public final class AcceptorServer implements LifeCycle {
     private final ChannelHandlerChain handlerChain;
 
     public AcceptorServer() {
-        this(1, Runtime.getRuntime().availableProcessors());
+        this(1, Runtime.getRuntime().availableProcessors() * 2);
     }
 
     public AcceptorServer(int acceptors, int workers) {

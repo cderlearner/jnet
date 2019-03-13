@@ -36,10 +36,10 @@ public class ChannelHandlerContext {
     ChannelHandlerContext addHandler(Handler handler) {
         if (handler instanceof InBoundHandler) {
             inBoundHandlers.add((InBoundHandler) handler);
-            ++ inBoundSize;
+            ++inBoundSize;
         } else if (handler instanceof OutBoundHandler) {
             outBoundHandlers.add((OutBoundHandler) handler);
-            ++ outBoundSize;
+            ++outBoundSize;
         }
         return this;
     }
@@ -64,7 +64,7 @@ public class ChannelHandlerContext {
         if (index >= inBoundSize)
             return;
         InBoundHandler handler = inBoundHandlers.get(index);
-        ++ index;
+        ++index;
         handler.channelActive(this);
     }
 
@@ -75,7 +75,7 @@ public class ChannelHandlerContext {
         if (index >= inBoundSize)
             return;
         InBoundHandler handler = inBoundHandlers.get(index);
-        ++ index;
+        ++index;
         handler.channelInActive(this);
     }
 
@@ -88,7 +88,7 @@ public class ChannelHandlerContext {
         if (index >= inBoundSize)
             return;
         InBoundHandler handler = inBoundHandlers.get(index);
-        ++ index;
+        ++index;
         handler.channelRead(message, this);
     }
 
@@ -132,7 +132,6 @@ public class ChannelHandlerContext {
         context.setRwWorkerChooseManager(rwWorkerChooseManager);
         rwWorkerChooseManager.chooseOne(channel).submit(new ChannelWriteEvent(context, message));
     }
-
 
     public void setRwWorkerChooseManager(RWWorkerChooseManager rwWorkerChooseManager) {
         this.rwWorkerChooseManager = rwWorkerChooseManager;
