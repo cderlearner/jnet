@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.IntStream;
 
-
 public abstract class AbstractChooseManager<T> implements ChooseManager<T> {
-
     private List<T> candidates;
     private ChooseStrategy<T> chooseStrategy;
 
@@ -49,11 +47,6 @@ public abstract class AbstractChooseManager<T> implements ChooseManager<T> {
         chooseStrategy.setCandidates(candidates);
     }
 
-    /**
-     * 生成一个候选人.
-     *
-     * @return <T> 候选者
-     */
     protected abstract T newCandidate();
 
     @Override

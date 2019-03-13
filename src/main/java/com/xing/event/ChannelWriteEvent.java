@@ -12,5 +12,4 @@ public class ChannelWriteEvent extends Event {
     protected void doRun(ChannelHandlerContext context, Object message) {
         context.fireChannelWrite(message);
     }
-
 }

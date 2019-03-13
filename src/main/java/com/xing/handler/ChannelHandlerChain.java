@@ -4,18 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelHandlerChain {
-    private final List<InBoundHandler> inBoundHandlers;
-    private final List<OutBoundHandler> outBoundHandlers;
+    private final List<InBoundHandler> inBoundHandlers = new ArrayList<>();
+    private final List<OutBoundHandler> outBoundHandlers = new ArrayList<OutBoundHandler>() {{
+        add(new DefaultOutBoundHandler());
+    }};
 
-    public ChannelHandlerChain() {
-        this.inBoundHandlers = new ArrayList<>();
-        this.outBoundHandlers = new ArrayList<>();
-        this.outBoundHandlers.add(new DefaultOutBoundHandler());
-    }
-
-    /**
-     * 添加处理器
-     */
     public void addHandler(Handler handler) {
         if (handler instanceof InBoundHandler) {
             inBoundHandlers.add((InBoundHandler) handler);

@@ -190,12 +190,6 @@ public class LengthFieldBasedDecoder extends InBoundHandlerAdapter {
         }
     }
 
-    /**
-     * 将byte数组转为int值.
-     *
-     * @param data byte数组
-     * @return int
-     */
     private int bytes2Int(byte[] data, int offset, int length) {
         int result = 0;
         if (byteOrder == ByteOrder.LITTLE_ENDIAN) {

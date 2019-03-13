@@ -1,6 +1,5 @@
 package com.xing.selector;
 
-
 import com.xing.lifecycle.LifeCycle;
 
 /**
@@ -12,5 +11,4 @@ public interface ChooseManager<T> extends LifeCycle {
      * 从管理的线程中选取一个.
      */
     T chooseOne(Object param);
-
 }

@@ -3,7 +3,6 @@ package com.xing.event;
 import com.xing.handler.ChannelHandlerContext;
 
 public abstract class Event implements Runnable {
-
     private ChannelHandlerContext ctx;
     private Object message;
 
@@ -26,5 +25,4 @@ public abstract class Event implements Runnable {
      * 子类真正的运行方法.
      */
     protected abstract void doRun(ChannelHandlerContext context, Object message);
-
 }

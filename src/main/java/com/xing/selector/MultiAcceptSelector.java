@@ -22,7 +22,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 public final class MultiAcceptSelector implements Runnable, LifeCycle {
     private static final ILog logger = LogManager.getLogger(MultiAcceptSelector.class);
 
@@ -38,7 +37,7 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
     private SelectorChooseManager selectorChooseManager;
     private RWWorkerChooseManager rwWorkerChooseManager;
 
-    private final Runnable eventProcessor = new EventProcessor();
+    private final Runnable eventProcessor = new EventLoop();
 
     MultiAcceptSelector(ExecutorService executor) {
         this(0, executor);
@@ -51,9 +50,6 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
         this.executor = executor;
     }
 
-    /**
-     * 启动Selector.
-     */
     @Override
     public void start() {
         try {
@@ -64,11 +60,6 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
         }
     }
 
-    /**
-     * Register the channel to the selector with the interested ops.
-     *
-     * @return boolean 是否提交成功
-     */
     public boolean register(SocketChannel channel, int ops) {
         Register register = new Register(channel, ops);
         boolean result;
@@ -110,12 +101,6 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
         this.rwWorkerChooseManager = rwWorkerChooseManager;
     }
 
-
-    /**
-     * 向Selector注册感兴趣的事件.
-     *
-     * @author skywalker
-     */
     private class Register implements Runnable {
 
         private final SocketChannel channel;
@@ -146,12 +131,7 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
 
     }
 
-    /**
-     * 处理Selector事件.
-     *
-     * @author skywalker
-     */
-    private class EventProcessor implements Runnable {
+    private class EventLoop implements Runnable {
 
         @Override
         public void run() {

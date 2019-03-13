@@ -20,7 +20,6 @@ import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-
 public final class AcceptorServer implements LifeCycle {
     private final static ILog logger = LogManager.getLogger(AcceptorServer.class);
 
@@ -37,30 +36,13 @@ public final class AcceptorServer implements LifeCycle {
     private final ChannelHandlerChain handlerChain;
 
     public AcceptorServer() {
-        this(0, 0);
+        this(1, Runtime.getRuntime().availableProcessors());
     }
 
     public AcceptorServer(int acceptors, int workers) {
-        int cores = Runtime.getRuntime().availableProcessors();
-        if (acceptors <= 1) {
-            acceptors = Math.max(2, Math.min(4, cores / 8));
-        }
-        if (workers <= 0) {
-            workers = Math.max(2, Math.min(4, cores / 8));
-        }
-        if (acceptors > cores) {
-            throw new IllegalArgumentException(
-                    "The acceptors count should be less than cores.");
-        }
-        if (workers > cores) {
-            throw new IllegalArgumentException(
-                    "The workers count should be less than cores.");
-        }
         executor = Executors.newFixedThreadPool(acceptors + workers, new NamedThreadFactory("jnet-accept"));
-        int selectors = (acceptors /= 2);
-
         // 监听连接管理器
-        selectorChooseManager = new SelectorChooseManager(selectors, executor);
+        selectorChooseManager = new SelectorChooseManager(acceptors, executor);
         // 读写事件处理管理器
         rwWorkerChooseManager = new RWWorkerChooseManager(workers, executor, new PortChooseStrategy());
 
@@ -115,7 +97,6 @@ public final class AcceptorServer implements LifeCycle {
     }
 
     private class Acceptor implements Runnable {
-
         @Override
         public void run() {
             while (true) {
@@ -134,7 +115,6 @@ public final class AcceptorServer implements LifeCycle {
                 }
             }
         }
-
     }
 
 }

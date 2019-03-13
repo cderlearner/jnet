@@ -14,5 +14,4 @@ public class StringEncoder extends OutBoundHandlerAdapter {
             context.fireChannelWrite(message);
         }
     }
-
 }
