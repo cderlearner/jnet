@@ -137,19 +137,10 @@ public class ChannelHandlerContext {
         rwWorkerChooseManager.chooseOne(channel).submit(new ChannelWriteEvent(context, message));
     }
 
-    public void setRwWorkerChooseManager(RWWorkerChooseManager rwWorkerChooseManager) {
-        this.rwWorkerChooseManager = rwWorkerChooseManager;
-    }
-
     /**
      * 直接使用Channel原生方法返回方法数据不会被{@link OutBoundHandler}处理.
      */
     public SocketChannel getChannel() {
         return channel;
     }
-
-    public void setChannel(SocketChannel channel) {
-        this.channel = channel;
-    }
-
 }
