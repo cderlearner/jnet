@@ -2,7 +2,6 @@ package com.xing.handler;
 
 import com.xing.event.ChannelWriteEvent;
 import com.xing.selector.worker.RWWorkerChooseManager;
-
 import java.nio.channels.SocketChannel;
 import java.util.List;
 
@@ -21,12 +20,16 @@ public class ChannelHandlerContext {
 
     public ChannelHandlerContext(List<InBoundHandler> inBoundHandlers,
                                  List<OutBoundHandler> outBoundHandlers,
-                                 boolean isInBound) {
+                                 boolean isInBound,
+                                 SocketChannel channel,
+                                 RWWorkerChooseManager rwWorkerChooseManager) {
         this.inBoundHandlers = inBoundHandlers;
         this.outBoundHandlers = outBoundHandlers;
         this.inBoundSize = inBoundHandlers.size();
         this.outBoundSize = outBoundHandlers.size();
         this.isInBound = isInBound;
+        this.channel = channel;
+        this.rwWorkerChooseManager = rwWorkerChooseManager;
         reset();
     }
 
@@ -127,9 +130,10 @@ public class ChannelHandlerContext {
      */
     public void writeFlush(Object message) {
         ChannelHandlerContext context = new ChannelHandlerContext(inBoundHandlers,
-                outBoundHandlers, false);
-        context.setChannel(channel);
-        context.setRwWorkerChooseManager(rwWorkerChooseManager);
+                outBoundHandlers,
+                false,
+                channel,
+                rwWorkerChooseManager);
         rwWorkerChooseManager.chooseOne(channel).submit(new ChannelWriteEvent(context, message));
     }
 

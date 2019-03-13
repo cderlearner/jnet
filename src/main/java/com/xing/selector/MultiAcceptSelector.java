@@ -115,14 +115,16 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
         public void run() {
             try {
                 SelectionKey key = channel.register(selector, ops);
-                // fire the ChannelActiveEvent
                 ChannelHandlerChain handlerChain = selectorChooseManager.getHandlerChain();
                 ChannelHandlerContext context = new ChannelHandlerContext(
                         handlerChain.copyInBoundHandlers(),
-                        handlerChain.copyOutBoundHandlers(), true);
-                context.setChannel(channel);
-                context.setRwWorkerChooseManager(rwWorkerChooseManager);
+                        handlerChain.copyOutBoundHandlers(),
+                        true,
+                        channel,
+                        rwWorkerChooseManager);
+
                 key.attach(context);
+
                 rwWorkerChooseManager.chooseOne(channel).submit(new ChannelActiveEvent(context));
             } catch (ClosedChannelException e) {
                 logger.error("Channel register failed: " + e.getMessage());
@@ -159,47 +161,29 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
             }
         }
 
-        /**
-         * 如果SelectionKey.attachment()返回空，那么重新构造一个HandlerContext, 否则使用原有的.
-         *
-         * @param attachment {@link Object}
-         * @param channel    {@link SocketChannel}
-         * @return {@link ChannelHandlerContext}
-         */
-        private ChannelHandlerContext checkAttachmentGetContext(Object attachment, SocketChannel channel) {
-            ChannelHandlerContext context;
-            if (attachment == null) {
-                ChannelHandlerChain handlerChain = selectorChooseManager.getHandlerChain();
-                context = new ChannelHandlerContext(handlerChain.copyInBoundHandlers(),
-                                                    handlerChain.copyOutBoundHandlers(),
-                                            true);
-                context.setChannel(channel);
-                context.setRwWorkerChooseManager(rwWorkerChooseManager);
-            } else {
-                context = (ChannelHandlerContext) attachment;
-            }
-            return context;
-        }
-
-        /**
-         * 客户端断开连接.
-         */
         private void processInActive(SelectionKey key) {
-            ChannelHandlerContext context = checkAttachmentGetContext(key.attachment(), (SocketChannel) key.channel());
+            ChannelHandlerContext context = getOrCreate(key.attachment(), (SocketChannel) key.channel());
             rwWorkerChooseManager.chooseOne(context.getChannel()).submit(new ChannelInActiveEvent(context));
             key.cancel();
         }
 
-        /**
-         * 处理读事件.
-         *
-         * @param buffer {@link ByteBuffer} 读取的数据
-         * @param key    {@link SelectionKey}
-         * @throws IOException
-         */
         private void processRead(ByteBuffer buffer, SelectionKey key) {
-            ChannelHandlerContext context = checkAttachmentGetContext(key.attachment(), (SocketChannel) key.channel());
+            ChannelHandlerContext context = getOrCreate(key.attachment(), (SocketChannel) key.channel());
             rwWorkerChooseManager.chooseOne(context.getChannel()).submit(new ChannelReadEvent(context, buffer));
+        }
+
+        private ChannelHandlerContext getOrCreate(Object attachment, SocketChannel channel) {
+            ChannelHandlerContext context;
+            if (attachment == null) {
+                ChannelHandlerChain handlerChain = selectorChooseManager.getHandlerChain();
+                context = new ChannelHandlerContext(handlerChain.copyInBoundHandlers(),
+                        handlerChain.copyOutBoundHandlers(),
+                        true,
+                        channel,
+                        rwWorkerChooseManager);
+                return context;
+            }
+            return (ChannelHandlerContext) attachment;
         }
     }
 
