@@ -87,9 +87,9 @@ public final class MultiAcceptSelector implements Runnable, LifeCycle {
                 lock.unlock();
             }
             if (task == null)
-                eventProcessor.run();
+                eventProcessor.run(); //select and processSelectedKeys
             else
-                task.run();
+                task.run();  // 处理任务
         }
     }
 

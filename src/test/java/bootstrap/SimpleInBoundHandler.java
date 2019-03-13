@@ -19,5 +19,4 @@ public class SimpleInBoundHandler extends InBoundHandlerAdapter {
     public void channelRead(Object message, ChannelHandlerContext context) {
         System.out.println(message.toString());
     }
-
 }

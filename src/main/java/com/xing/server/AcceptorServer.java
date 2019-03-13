@@ -40,7 +40,7 @@ public final class AcceptorServer implements LifeCycle {
     }
 
     public AcceptorServer(int acceptors, int workers) {
-        executor = Executors.newFixedThreadPool(acceptors + workers, new NamedThreadFactory("jnet-accept"));
+        executor = Executors.newFixedThreadPool(acceptors + workers, new NamedThreadFactory("jnet-eventLoop"));
         // 监听连接管理器
         selectorChooseManager = new SelectorChooseManager(acceptors, executor);
         // 读写事件处理管理器
@@ -51,14 +51,6 @@ public final class AcceptorServer implements LifeCycle {
 
         selectorChooseManager.setHandlerChain(handlerChain);
         selectorChooseManager.setWorkerManager(rwWorkerChooseManager);
-    }
-
-    /**
-     * 设置监听方式.
-     */
-    public AcceptorServer configureBlocking(boolean block) {
-        this.block = block;
-        return this;
     }
 
     /**

@@ -11,16 +11,14 @@ import com.xing.handler.encoder.StringEncoder;
 
 import java.util.concurrent.TimeUnit;
 
-
 public class Bootstrap {
 
     @Test
     public void lengthFieldBasedDecoder() {
-        AcceptorServer acceptorServer = new AcceptorServer();
-        acceptorServer.bind(8080).withHandlers(new HandlerInitializer() {
+        new AcceptorServer().bind(8080).withHandlers(new HandlerInitializer() {
             @Override
             public Handler[] init() {
-                return new Handler[] {
+                return new Handler[]{
                         new LengthFieldBasedDecoder(0, 4),
                         new StringDecoder(),
                         new SimpleInBoundHandler()};
@@ -30,11 +28,10 @@ public class Bootstrap {
 
     @Test
     public void delimiterBasedDecoder() throws InterruptedException {
-        AcceptorServer acceptorServer = new AcceptorServer();
-        acceptorServer.bind(8080).withHandlers(new HandlerInitializer() {
+        new AcceptorServer().bind(8080).withHandlers(new HandlerInitializer() {
             @Override
             public Handler[] init() {
-                return new Handler[] {
+                return new Handler[]{
                         new DelimiterBasedDecoder('a'),
                         new StringDecoder(),
                         new SimpleInBoundHandler()};
@@ -45,8 +42,7 @@ public class Bootstrap {
 
     @Test
     public void response() throws InterruptedException {
-        AcceptorServer acceptorServer = new AcceptorServer();
-        acceptorServer.bind(8080).withHandlers(
+        new AcceptorServer().bind(8080).withHandlers(
                 new StringDecoder(),
                 new ResponseHandler(),
                 new StringEncoder()).start();
